@@ -3,7 +3,7 @@ package com.gio
 import kotlin.math.floor
 
 
-abstract class Human(private val name: String, private val surame: String, private val age: Int) {
+abstract class Human(private val name: String, private val surname: String, private val age: Int) {
 
     abstract fun run()
     abstract val hobby: String
