@@ -25,6 +25,8 @@ fun main() {
 
     val xili = mapOf<String, Xili>("vashli" to Xili("Apple", 2.3), "atami" to Xili("Peach", 3.3))
     println(xili.get("vashli"))
+
+    println(daysOfTheWeek.toSortedMap())
 }
 
 data class Xili(val name: String, val price: Double)
