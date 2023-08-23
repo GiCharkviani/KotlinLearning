@@ -59,14 +59,19 @@ class QuizQuestionsActivity : AppCompatActivity(), OnClickListener {
         mQuestionsList = Constants.getQuestions()
 
         setQuestion()
-        tvOptionOne?.setOnClickListener(this)
-        tvOptionTwo?.setOnClickListener(this)
-        tvOptionThree?.setOnClickListener(this)
-        tvOptionFour?.setOnClickListener(this)
         btnSubmit?.setOnClickListener(this)
     }
 
+    private fun setOnClickListeners(view: View.OnClickListener? = this as View.OnClickListener) {
+        tvOptionOne?.setOnClickListener(view)
+        tvOptionTwo?.setOnClickListener(view)
+        tvOptionThree?.setOnClickListener(view)
+        tvOptionFour?.setOnClickListener(view)
+    }
+
+
     private fun setQuestion() {
+        setOnClickListeners()
         val question: Question = mQuestionsList!![mCurrentPosition - 1]
         defaultOptionsView()
         ivImage?.setImageResource(question.image)
@@ -78,9 +83,7 @@ class QuizQuestionsActivity : AppCompatActivity(), OnClickListener {
         tvOptionThree?.text = question.optionThree
         tvOptionFour?.text = question.optionFour
 
-        if(mCurrentPosition == mQuestionsList!!.size) {
-            btnSubmit?.text = "FINISH"
-        } else {
+        if(mCurrentPosition <= mQuestionsList!!.size) {
             btnSubmit?.text = "SUBMIT"
         }
     }
@@ -151,6 +154,9 @@ class QuizQuestionsActivity : AppCompatActivity(), OnClickListener {
                         mCurrentPosition <= mQuestionsList!!.size -> {
                             setQuestion()
                         }
+                        mCurrentPosition == mQuestionsList!!.size + 1 -> {
+                            btnSubmit?.text = "FINISH"
+                        }
                         else -> {
                             val intent = Intent(this, ResultActivity::class.java)
                             intent.putExtra(Constants.USER_NAME, mUserName)
@@ -169,12 +175,15 @@ class QuizQuestionsActivity : AppCompatActivity(), OnClickListener {
                     }
                     answerView(question.correctAnswer, R.drawable.correct_option_border_bg)
 
-                    if(mCurrentPosition == mQuestionsList!!.size) {
-                        btnSubmit?.text = "FINISH"
-                    } else {
-                        btnSubmit?.text = "GO TO NEXT QUESTION"
-                    }
 
+
+                    if(mCurrentPosition < mQuestionsList!!.size) {
+                        btnSubmit?.text = "GO TO NEXT QUESTION"
+                        setOnClickListeners(null)
+                    }
+                    if(mCurrentPosition == mQuestionsList!!.size) {
+                        setOnClickListeners(null)
+                    }
                     mSelectedOptionPosition = 0
                 }
             }
